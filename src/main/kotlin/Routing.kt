@@ -10,11 +10,13 @@ import org.delcom.data.ErrorResponse
 import org.delcom.helpers.parseMessageToMap
 import org.delcom.services.PlantService
 import org.delcom.services.ProfileService
+import org.delcom.services.RumahAdatService
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
     val plantService: PlantService by inject()
     val profileService: ProfileService by inject()
+    val rumahAdatService: RumahAdatService by inject()
 
     install(StatusPages) {
         // Tangkap AppException
@@ -46,7 +48,7 @@ fun Application.configureRouting() {
 
     routing {
         get("/") {
-            call.respondText("API telah berjalan. Dibuat oleh Abdullah Ubaid.")
+            call.respondText("API telah berjalan. Dibuat oleh Jeffry Tambunan.")
         }
 
         // Route Plants
@@ -71,6 +73,25 @@ fun Application.configureRouting() {
             // melalui URL "/static/plants/{filename}" tanpa memanggil endpoint ini
             get("/{id}/image") {
                 plantService.getPlantImage(call)
+            }
+        }
+
+        // ── Route Rumah Adat ───────────────────────────
+        route("/rumah-adat") {
+            get {
+                rumahAdatService.getAllRumahAdat(call)
+            }
+            post {
+                rumahAdatService.createRumahAdat(call)
+            }
+            get("/{id}") {
+                rumahAdatService.getRumahAdatById(call)
+            }
+            put("/{id}") {
+                rumahAdatService.updateRumahAdat(call)
+            }
+            delete("/{id}") {
+                rumahAdatService.deleteRumahAdat(call)
             }
         }
 

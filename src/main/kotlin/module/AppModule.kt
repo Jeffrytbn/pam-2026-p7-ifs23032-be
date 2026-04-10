@@ -2,9 +2,12 @@ package org.delcom.module
 
 import io.ktor.server.application.*
 import org.delcom.repositories.IPlantRepository
+import org.delcom.repositories.IRumahAdatRepository
 import org.delcom.repositories.PlantRepository
+import org.delcom.repositories.RumahAdatRepository
 import org.delcom.services.PlantService
 import org.delcom.services.ProfileService
+import org.delcom.services.RumahAdatService
 import org.koin.dsl.module
 
 fun appModule(application: Application) = module {
@@ -13,17 +16,23 @@ fun appModule(application: Application) = module {
         .getString()
         .trimEnd('/')   // Pastikan tidak ada trailing slash
 
-    // Plant Repository (menerima baseUrl untuk membangun URL gambar)
+    // ── Plant ──────────────────────────────────────
     single<IPlantRepository> {
         PlantRepository(baseUrl)
     }
-
-    // Plant Service
     single {
         PlantService(get())
     }
 
-    // Profile Service (menerima baseUrl untuk membangun URL foto profil)
+    // ── Rumah Adat ─────────────────────────────────
+    single<IRumahAdatRepository> {
+        RumahAdatRepository(baseUrl)
+    }
+    single {
+        RumahAdatService(get())
+    }
+
+    // ── Profile ────────────────────────────────────
     single {
         ProfileService(baseUrl)
     }
